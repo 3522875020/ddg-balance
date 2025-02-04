@@ -1,5 +1,4 @@
-from http.client import HTTPException
-from fastapi import APIRouter, Depends, Header, Request
+from fastapi import APIRouter, Depends, Header, Request, HTTPException
 from fastapi.responses import StreamingResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
@@ -39,7 +38,7 @@ async def list_models(
         return model_service.get_models()
     except Exception as e:
         logger.error(f"Error getting models list: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal server error while fetching models list") from e
+        raise HTTPException(500, "Internal server error while fetching models list") from e
 
 
 @router.post("/v1/chat/completions")
@@ -64,7 +63,7 @@ async def chat_completion(
 
     except Exception as e:
         logger.error(f"Chat completion failed: {str(e)}")
-        raise HTTPException(status_code=500, detail="Chat completion failed") from e
+        raise HTTPException(500, "Chat completion failed") from e
 
 
 @router.post("/v1/embeddings")
@@ -82,7 +81,7 @@ async def embedding(
         return response
     except Exception as e:
         logger.error(f"Embedding request failed: {str(e)}")
-        raise HTTPException(status_code=500, detail="Embedding request failed") from e
+        raise HTTPException(500, "Embedding request failed") from e
 
 
 @router.get("/v1/keys/list")
@@ -106,7 +105,4 @@ async def get_keys_list(
         }
     except Exception as e:
         logger.error(f"Error getting keys list: {str(e)}")
-        raise HTTPException(
-            status_code=500,
-            detail="Internal server error while fetching keys list"
-        ) from e
+        raise HTTPException(500, "Internal server error while fetching keys list") from e
